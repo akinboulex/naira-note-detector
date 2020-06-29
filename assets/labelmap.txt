@@ -1,0 +1,9 @@
+???
+five naira
+ten naira
+twenty naira
+fifty naira
+one_hundred naira
+two_hundred naira
+five_hundred naira
+one_thousand naira

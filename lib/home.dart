@@ -37,6 +37,7 @@ class _HomePageState extends State<HomePage> {
     await flutterTts.setSpeechRate(0.55);
   }
 
+  // function for outputting the naira note recognized out as speech
   modelSpeak(amount) async {
     await flutterTts.setLanguage("en-US");
     await flutterTts.setPitch(0.85);
@@ -88,8 +89,7 @@ class _HomePageState extends State<HomePage> {
       _recognitions = recognitions;
       _imageHeight = imageHeight;
       _imageWidth = imageWidth;
-      //modelSpeak(recognitions);
-      //print(_recognitions);
+
     });
   }
 

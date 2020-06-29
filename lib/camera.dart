@@ -32,14 +32,7 @@ class _CameraState extends State<Camera> {
   @override
   void initState() {
     super.initState();
-
-    modelllSpeak(amount) async {
-      await flutterTts.setLanguage("en-US");
-      await flutterTts.setPitch(0.85);
-      await flutterTts.speak(amount);
-      await flutterTts.setSpeechRate(1.0);
-    }
-
+    
 
     if (widget.cameras == null || widget.cameras.length < 1) {
       print('No camera is found');
@@ -105,7 +98,7 @@ class _CameraState extends State<Camera> {
                 imageStd: widget.model == yolo ? 255.0 : 127.5,
                 numResultsPerClass: 1,
                 threshold: widget.model == yolo ? 0.2 : 0.4,
-                
+
               ).then((recognitions) {
                 int endTime = new DateTime.now().millisecondsSinceEpoch;
                 print("Detection took ${endTime - startTime}");

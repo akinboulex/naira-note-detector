@@ -6,9 +6,8 @@ import 'models.dart';
 
 import "package:flutter_tts/flutter_tts.dart";
 
-class BndBox extends StatelessWidget {
+class BndBox extends StatefulWidget {
 
-  final FlutterTts flutterTts = FlutterTts();
   final List<dynamic> results;
   final int previewH;
   final int previewW;
@@ -20,6 +19,12 @@ class BndBox extends StatelessWidget {
   BndBox(this.results, this.previewH, this.previewW, this.screenH, this.screenW,
       this.model);
 
+  @override
+  _BndBoxState createState() => _BndBoxState();
+}
+
+class _BndBoxState extends State<BndBox> {
+  final FlutterTts flutterTts = FlutterTts();
 
 modelSpeak(amount) async {
     await flutterTts.setLanguage("en-US");
@@ -29,14 +34,12 @@ modelSpeak(amount) async {
   }
 
 
- var i =0;
-
 
   @override
   Widget build(BuildContext context) {
 
     List<Widget> _renderBoxes()  {
-      return results.map((re) {
+      return widget.results.map((re) {
         var _x = re["rect"]["x"];
         var _w = re["rect"]["w"];
         var _y = re["rect"]["y"];
@@ -48,6 +51,30 @@ modelSpeak(amount) async {
           modelSpeak('${re["detectedClass"]}');
           Future.delayed(Duration(seconds: 12),()=>modelSpeak("${re["detectedClass"]}"));
         }
+
+
+//  String formerClass = '';
+//  @override
+//  Widget build(BuildContext context) {
+//
+//    List<Widget> _renderBoxes() {
+//      return widget.results.map((re) {
+//        var _x = re["rect"]["x"];
+//        var _w = re["rect"]["w"];
+//        var _y = re["rect"]["y"];
+//        var _h = re["rect"]["h"];
+//        var scaleW, scaleH, x, y, w, h;
+//        if(double.tryParse('${(re["confidenceInClass"] * 100).toStringAsFixed(0)}') >= 80){
+//
+//
+//          if(formerClass != "${re["detectedClass"]}" || formerClass.isEmpty){
+//            modelSpeak("${re["detectedClass"]}");
+//            setState(()=> formerClass = "${re["detectedClass"]}");
+//          }
+//        }
+
+
+
 
 //        else{
 //              print("${re["detectedClass"]}, ${DateTime.now()}");
@@ -71,19 +98,19 @@ modelSpeak(amount) async {
 
       //  modelSpeak('${re["detectedClass"]}');
 
-        if (screenH / screenW > previewH / previewW) {
-          scaleW = screenH / previewH * previewW;
-          scaleH = screenH;
-          var difW = (scaleW - screenW) / scaleW;
+        if (widget.screenH / widget.screenW > widget.previewH / widget.previewW) {
+          scaleW = widget.screenH / widget.previewH * widget.previewW;
+          scaleH = widget.screenH;
+          var difW = (scaleW - widget.screenW) / scaleW;
           x = (_x - difW / 2) * scaleW;
           w = _w * scaleW;
           if (_x < difW / 2) w -= (difW / 2 - _x) * scaleW;
           y = _y * scaleH;
           h = _h * scaleH;
         } else {
-          scaleH = screenW / previewW * previewH;
-          scaleW = screenW;
-          var difH = (scaleH - screenH) / scaleH;
+          scaleH = widget.screenW / widget.previewW * widget.previewH;
+          scaleW = widget.screenW;
+          var difH = (scaleH - widget.screenH) / scaleH;
           x = _x * scaleW;
           w = _w * scaleW;
           y = (_y - difH / 2) * scaleH;
@@ -119,13 +146,13 @@ modelSpeak(amount) async {
 
     List<Widget> _renderStrings() {
       double offset = -10;
-      return results.map((re) {
+      return widget.results.map((re) {
         offset = offset + 14;
         return Positioned(
           left: 10,
           top: offset,
-          width: screenW,
-          height: screenH,
+          width: widget.screenW,
+          height: widget.screenH,
           child: Text(
             "${re["label"]} ${(re["confidence"] * 100).toStringAsFixed(0)}%",
             style: TextStyle(
@@ -138,24 +165,24 @@ modelSpeak(amount) async {
       }).toList();
     }
 
-    List<Widget> _renderKeypoints() {
+    List<Widget> _renderKeyPoints() {
       var lists = <Widget>[];
-      results.forEach((re) {
+      widget.results.forEach((re) {
         var list = re["keypoints"].values.map<Widget>((k) {
           var _x = k["x"];
           var _y = k["y"];
           var scaleW, scaleH, x, y;
 
-          if (screenH / screenW > previewH / previewW) {
-            scaleW = screenH / previewH * previewW;
-            scaleH = screenH;
-            var difW = (scaleW - screenW) / scaleW;
+          if (widget.screenH / widget.screenW > widget.previewH / widget.previewW) {
+            scaleW = widget.screenH / widget.previewH * widget.previewW;
+            scaleH = widget.screenH;
+            var difW = (scaleW - widget.screenW) / scaleW;
             x = (_x - difW / 2) * scaleW;
             y = _y * scaleH;
           } else {
-            scaleH = screenW / previewW * previewH;
-            scaleW = screenW;
-            var difH = (scaleH - screenH) / scaleH;
+            scaleH = widget.screenW / widget.previewW * widget.previewH;
+            scaleW = widget.screenW;
+            var difH = (scaleH - widget.screenH) / scaleH;
             x = _x * scaleW;
             y = (_y - difH / 2) * scaleH;
           }
@@ -183,9 +210,9 @@ modelSpeak(amount) async {
     }
 
     return Stack(
-      children: model == mobilenet
+      children: widget.model == mobilenet
           ? _renderStrings()
-          : model == posenet ? _renderKeypoints() : _renderBoxes(),
+          : widget.model == posenet ? _renderKeyPoints() : _renderBoxes(),
     );
   }
 }

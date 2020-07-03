@@ -38,9 +38,15 @@ modelSpeak(amount) async {
         var _y = re["rect"]["y"];
         var _h = re["rect"]["h"];
         var scaleW, scaleH, x, y, w, h;
+
         if(double.tryParse('${(re["confidence"] * 100).toStringAsFixed(0)}') >= 60){
           modelSpeak("${re["detectedClass"]}");
         }
+
+//       //
+//        if(double.tryParse('${(re["confidenceInClass"] * 100).toStringAsFixed(0)}')>=60 ){
+//          modelSpeak("${re["detectedClass"]}");
+//        }
 
         modelSpeak('${re["detectedClass"]}');
 

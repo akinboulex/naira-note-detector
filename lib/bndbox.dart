@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'dart:math' as math;
 import 'models.dart';
@@ -27,11 +29,13 @@ modelSpeak(amount) async {
   }
 
 
+ var i =0;
+
 
   @override
   Widget build(BuildContext context) {
-    
-    List<Widget> _renderBoxes() {
+
+    List<Widget> _renderBoxes()  {
       return results.map((re) {
         var _x = re["rect"]["x"];
         var _w = re["rect"]["w"];
@@ -39,16 +43,33 @@ modelSpeak(amount) async {
         var _h = re["rect"]["h"];
         var scaleW, scaleH, x, y, w, h;
 
-        if(double.tryParse('${(re["confidence"] * 100).toStringAsFixed(0)}') >= 60){
-          modelSpeak("${re["detectedClass"]}");
+
+        if ((double.tryParse('${(re["confidenceInClass"]*100).toStringAsFixed(0)}') >= 80)){
+          modelSpeak('${re["detectedClass"]}');
+          Future.delayed(Duration(seconds: 12),()=>modelSpeak("${re["detectedClass"]}"));
         }
+
+//        else{
+//              print("${re["detectedClass"]}, ${DateTime.now()}");
+//        }
+
+//        if(double.tryParse('${(re["confidenceInClass"]*100).toStringAsFixed(0)}') >= 80){
+
+          //modelSpeak('${re["detectedClass3"]}');
+
+//          Timer(Duration(seconds: 12), ()=>modelSpeak("${re["detectedClass"]}"));
+
+//          Future.delayed(Duration(seconds: 12),()=> print("${re["detectedClass"]}, ${DateTime.now()}"));
+
+          //modelSpeak("${re["detectedClass"]}")
+//        }
 
 //       //
 //        if(double.tryParse('${(re["confidenceInClass"] * 100).toStringAsFixed(0)}')>=60 ){
 //          modelSpeak("${re["detectedClass"]}");
 //        }
 
-        modelSpeak('${re["detectedClass"]}');
+      //  modelSpeak('${re["detectedClass"]}');
 
         if (screenH / screenW > previewH / previewW) {
           scaleW = screenH / previewH * previewW;

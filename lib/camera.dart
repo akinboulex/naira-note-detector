@@ -104,7 +104,7 @@ class _CameraState extends State<Camera> {
 
               ).then((recognitions) {
                 int endTime = new DateTime.now().millisecondsSinceEpoch;
-                print("Detection took ${endTime - startTime}");
+//                print("Detection took ${endTime - startTime}");
 
                 widget.setRecognitions(recognitions, img.height, img.width);
 

@@ -7,14 +7,12 @@ import 'models.dart';
 import "package:flutter_tts/flutter_tts.dart";
 
 class BndBox extends StatefulWidget {
-
   final List<dynamic> results;
   final int previewH;
   final int previewW;
   final double screenH;
   final double screenW;
   final String model;
-
 
   BndBox(this.results, this.previewH, this.previewW, this.screenH, this.screenW,
       this.model);
@@ -26,19 +24,44 @@ class BndBox extends StatefulWidget {
 class _BndBoxState extends State<BndBox> {
   final FlutterTts flutterTts = FlutterTts();
 
-modelSpeak(amount) async {
+  modelSpeak(amount) async {
     await flutterTts.setLanguage("en-US");
     await flutterTts.setPitch(0.85);
     await flutterTts.speak(amount);
     await flutterTts.setSpeechRate(0.75);
   }
 
+//
+//  @override
+//  Widget build(BuildContext context) {
 
+//    List<Widget> _renderBoxes()  {
+//      return widget.results.map((re) {
+//        var _x = re["rect"]["x"];
+//        var _w = re["rect"]["w"];
+//        var _y = re["rect"]["y"];
+//        var _h = re["rect"]["h"];
+//        var scaleW, scaleH, x, y, w, h;
+//
+//          if (){
+//
+//          }
+//
+//         if ((double.tryParse('${(re["confidenceInClass"]*100).toStringAsFixed(0)}') >= 80)){
+//           modelSpeak('${re["detectedClass"]}');
+//           Future.delayed(Duration(seconds: 12),()=>modelSpeak("${re["detectedClass"]}"));
+//         }
+
+  String formerClass = '';
 
   @override
   Widget build(BuildContext context) {
 
-    List<Widget> _renderBoxes()  {
+    if(widget.results.isEmpty){
+          setState(()=>formerClass = '');
+        }
+
+      List<Widget> _renderBoxes() {
       return widget.results.map((re) {
         var _x = re["rect"]["x"];
         var _w = re["rect"]["w"];
@@ -46,35 +69,20 @@ modelSpeak(amount) async {
         var _h = re["rect"]["h"];
         var scaleW, scaleH, x, y, w, h;
 
-
-        if ((double.tryParse('${(re["confidenceInClass"]*100).toStringAsFixed(0)}') >= 80)){
-          modelSpeak('${re["detectedClass"]}');
-          Future.delayed(Duration(seconds: 12),()=>modelSpeak("${re["detectedClass"]}"));
-        }
-
-
-//  String formerClass = '';
-//  @override
-//  Widget build(BuildContext context) {
-//
-//    List<Widget> _renderBoxes() {
-//      return widget.results.map((re) {
-//        var _x = re["rect"]["x"];
-//        var _w = re["rect"]["w"];
-//        var _y = re["rect"]["y"];
-//        var _h = re["rect"]["h"];
-//        var scaleW, scaleH, x, y, w, h;
-//        if(double.tryParse('${(re["confidenceInClass"] * 100).toStringAsFixed(0)}') >= 80){
-//
-//
-//          if(formerClass != "${re["detectedClass"]}" || formerClass.isEmpty){
-//            modelSpeak("${re["detectedClass"]}");
-//            setState(()=> formerClass = "${re["detectedClass"]}");
-//          }
+//        if(re['detectedClass'] == null || re['detectedClass'].isEmpty){
+//          setState(()=>formerClass = '');
 //        }
 
+        print("detected class is :$re");
 
-
+        if (double.tryParse(
+                '${(re["confidenceInClass"] * 100).toStringAsFixed(0)}') >=
+            80) {
+          if (formerClass != "${re["detectedClass"]}" || formerClass.isEmpty) {
+            modelSpeak("${re["detectedClass"]}");
+            setState(() => formerClass = "${re["detectedClass"]}");
+          }
+        }
 
 //        else{
 //              print("${re["detectedClass"]}, ${DateTime.now()}");
@@ -82,13 +90,13 @@ modelSpeak(amount) async {
 
 //        if(double.tryParse('${(re["confidenceInClass"]*100).toStringAsFixed(0)}') >= 80){
 
-          //modelSpeak('${re["detectedClass3"]}');
+        //modelSpeak('${re["detectedClass3"]}');
 
 //          Timer(Duration(seconds: 12), ()=>modelSpeak("${re["detectedClass"]}"));
 
 //          Future.delayed(Duration(seconds: 12),()=> print("${re["detectedClass"]}, ${DateTime.now()}"));
 
-          //modelSpeak("${re["detectedClass"]}")
+        //modelSpeak("${re["detectedClass"]}")
 //        }
 
 //       //
@@ -96,9 +104,10 @@ modelSpeak(amount) async {
 //          modelSpeak("${re["detectedClass"]}");
 //        }
 
-      //  modelSpeak('${re["detectedClass"]}');
+        //  modelSpeak('${re["detectedClass"]}');
 
-        if (widget.screenH / widget.screenW > widget.previewH / widget.previewW) {
+        if (widget.screenH / widget.screenW >
+            widget.previewH / widget.previewW) {
           scaleW = widget.screenH / widget.previewH * widget.previewW;
           scaleH = widget.screenH;
           var difW = (scaleW - widget.screenW) / scaleW;
@@ -173,7 +182,8 @@ modelSpeak(amount) async {
           var _y = k["y"];
           var scaleW, scaleH, x, y;
 
-          if (widget.screenH / widget.screenW > widget.previewH / widget.previewW) {
+          if (widget.screenH / widget.screenW >
+              widget.previewH / widget.previewW) {
             scaleW = widget.screenH / widget.previewH * widget.previewW;
             scaleH = widget.screenH;
             var difW = (scaleW - widget.screenW) / scaleW;

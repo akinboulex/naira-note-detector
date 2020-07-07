@@ -69,9 +69,7 @@ class _BndBoxState extends State<BndBox> {
         var _h = re["rect"]["h"];
         var scaleW, scaleH, x, y, w, h;
 
-//        if(re['detectedClass'] == null || re['detectedClass'].isEmpty){
-//          setState(()=>formerClass = '');
-//        }
+//
 
         print("detected class is :$re");
 
@@ -84,27 +82,7 @@ class _BndBoxState extends State<BndBox> {
           }
         }
 
-//        else{
-//              print("${re["detectedClass"]}, ${DateTime.now()}");
-//        }
-
-//        if(double.tryParse('${(re["confidenceInClass"]*100).toStringAsFixed(0)}') >= 80){
-
-        //modelSpeak('${re["detectedClass3"]}');
-
-//          Timer(Duration(seconds: 12), ()=>modelSpeak("${re["detectedClass"]}"));
-
-//          Future.delayed(Duration(seconds: 12),()=> print("${re["detectedClass"]}, ${DateTime.now()}"));
-
-        //modelSpeak("${re["detectedClass"]}")
-//        }
-
-//       //
-//        if(double.tryParse('${(re["confidenceInClass"] * 100).toStringAsFixed(0)}')>=60 ){
-//          modelSpeak("${re["detectedClass"]}");
-//        }
-
-        //  modelSpeak('${re["detectedClass"]}');
+//
 
         if (widget.screenH / widget.screenW >
             widget.previewH / widget.previewW) {

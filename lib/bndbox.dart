@@ -31,37 +31,23 @@ class _BndBoxState extends State<BndBox> {
     await flutterTts.setSpeechRate(0.75);
   }
 
-//
-//  @override
-//  Widget build(BuildContext context) {
-
-//    List<Widget> _renderBoxes()  {
-//      return widget.results.map((re) {
-//        var _x = re["rect"]["x"];
-//        var _w = re["rect"]["w"];
-//        var _y = re["rect"]["y"];
-//        var _h = re["rect"]["h"];
-//        var scaleW, scaleH, x, y, w, h;
-//
-//          if (){
-//
-//          }
-//
-//         if ((double.tryParse('${(re["confidenceInClass"]*100).toStringAsFixed(0)}') >= 80)){
-//           modelSpeak('${re["detectedClass"]}');
-//           Future.delayed(Duration(seconds: 12),()=>modelSpeak("${re["detectedClass"]}"));
-//         }
-
   String formerClass = '';
 
   @override
   Widget build(BuildContext context) {
+    if (widget.results.isEmpty) {
+      setState(() => formerClass = '');
+    }
 
-    if(widget.results.isEmpty){
-          setState(()=>formerClass = '');
-        }
+    List<Widget> _renderBoxes() {
+      var lengthy = widget.results.length;
 
-      List<Widget> _renderBoxes() {
+      var temp;
+
+      setState(() {
+        temp = widget.results;
+      });
+
       return widget.results.map((re) {
         var _x = re["rect"]["x"];
         var _w = re["rect"]["w"];
@@ -69,20 +55,74 @@ class _BndBoxState extends State<BndBox> {
         var _h = re["rect"]["h"];
         var scaleW, scaleH, x, y, w, h;
 
-//
 
-        print("detected class is :$re");
 
         if (double.tryParse(
                 '${(re["confidenceInClass"] * 100).toStringAsFixed(0)}') >=
-            80) {
+            40) {
           if (formerClass != "${re["detectedClass"]}" || formerClass.isEmpty) {
-            modelSpeak("${re["detectedClass"]}");
-            setState(() => formerClass = "${re["detectedClass"]}");
+            if (lengthy > 1) {
+              var totalAmount = 0;
+
+//              print("faaaaaaa is :${temp.length}");
+
+              temp.map(
+                (f) {
+                  print("fetched: ");
+                  switch ("${f["detectedClass"]}") {
+                    case "five naira":
+                      {
+                        totalAmount += 5;
+                        break;
+                      }
+
+                    case "ten naira":
+                      {
+                        totalAmount += 10;
+                        break;
+                      }
+                    case "twenty naira":
+                      {
+                        totalAmount += 20;
+                        break;
+                      }
+                    case "fifty naira":
+                      {
+                        totalAmount += 50;
+                        break;
+                      }
+                    case "one hundred naira":
+                      {
+                        totalAmount += 100;
+                        break;
+                      }
+                    case "two hundred naira":
+                      {
+                        totalAmount += 200;
+                        break;
+                      }
+                    case "five hundred naira":
+                      {
+                        totalAmount += 500;
+                        break;
+                      }
+                    case "one thousand naira":
+                      {
+                        totalAmount += 1000;
+                        break;
+                      }
+                    default:
+                      break;
+                  }
+                },
+              );
+              modelSpeak("$totalAmount naira");
+            } else {
+              modelSpeak("${re["detectedClass"]}");
+              setState(() => formerClass = "${re["detectedClass"]}");
+            }
           }
         }
-
-//
 
         if (widget.screenH / widget.screenW >
             widget.previewH / widget.previewW) {

@@ -33,20 +33,23 @@ class _BndBoxState extends State<BndBox> {
 
   String formerClass = '';
 
+  List formerClasses = [];
+
   @override
   Widget build(BuildContext context) {
     if (widget.results.isEmpty) {
-      setState(() => formerClass = '');
+      setState(() {
+        formerClass = '';
+        formerClasses = [];
+      });
     }
 
     List<Widget> _renderBoxes() {
       var lengthy = widget.results.length;
 
-      var temp;
+      var temp = widget.results;
 
-      setState(() {
-        temp = widget.results;
-      });
+//      print("the lenght of temp is: ${temp.length}");
 
       return widget.results.map((re) {
         var _x = re["rect"]["x"];
@@ -55,72 +58,71 @@ class _BndBoxState extends State<BndBox> {
         var _h = re["rect"]["h"];
         var scaleW, scaleH, x, y, w, h;
 
+        if (lengthy > 1) {
+          if (formerClasses.isEmpty) {
+            var totalAmount = 0;
 
+            temp.forEach((f) {
+              if (double.tryParse(
+                      '${(f["confidenceInClass"] * 100).toStringAsFixed(0)}') >=
+                  40) {
+                formerClasses.add("${f['detectedClass']}");
 
-        if (double.tryParse(
+                switch ("${f['detectedClass']}") {
+                  case "five naira":
+                    {
+                      totalAmount += 5;
+                      break;
+                    }
+                  case "ten naira":
+                    {
+                      totalAmount += 10;
+                      break;
+                    }
+                  case "twenty naira":
+                    {
+                      totalAmount += 20;
+                      break;
+                    }
+                  case "fifty naira":
+                    {
+                      totalAmount += 50;
+                      break;
+                    }
+                  case "one hundred naira":
+                    {
+                      totalAmount += 100;
+                      break;
+                    }
+                  case "two hundred naira":
+                    {
+                      totalAmount += 200;
+                      break;
+                    }
+                  case "five hundred naira":
+                    {
+                      totalAmount += 500;
+                      break;
+                    }
+                  case "one thousand naira":
+                    {
+                      totalAmount += 1000;
+                      break;
+                    }
+                  default:
+                    break;
+                }
+              }
+            });
+            modelSpeak("$totalAmount naira");
+            print("total amount in naira : $totalAmount naira");
+          }
+        } else if (double.tryParse(
                 '${(re["confidenceInClass"] * 100).toStringAsFixed(0)}') >=
             40) {
           if (formerClass != "${re["detectedClass"]}" || formerClass.isEmpty) {
-            if (lengthy > 1) {
-              var totalAmount = 0;
-
-//              print("faaaaaaa is :${temp.length}");
-
-              temp.map(
-                (f) {
-                  print("fetched: ");
-                  switch ("${f["detectedClass"]}") {
-                    case "five naira":
-                      {
-                        totalAmount += 5;
-                        break;
-                      }
-
-                    case "ten naira":
-                      {
-                        totalAmount += 10;
-                        break;
-                      }
-                    case "twenty naira":
-                      {
-                        totalAmount += 20;
-                        break;
-                      }
-                    case "fifty naira":
-                      {
-                        totalAmount += 50;
-                        break;
-                      }
-                    case "one hundred naira":
-                      {
-                        totalAmount += 100;
-                        break;
-                      }
-                    case "two hundred naira":
-                      {
-                        totalAmount += 200;
-                        break;
-                      }
-                    case "five hundred naira":
-                      {
-                        totalAmount += 500;
-                        break;
-                      }
-                    case "one thousand naira":
-                      {
-                        totalAmount += 1000;
-                        break;
-                      }
-                    default:
-                      break;
-                  }
-                },
-              );
-              modelSpeak("$totalAmount naira");
-            } else {
-              modelSpeak("${re["detectedClass"]}");
-              setState(() => formerClass = "${re["detectedClass"]}");
-            }
+            modelSpeak("${re["detectedClass"]}");
+            setState(() => formerClass = "${re["detectedClass"]}");
           }
         }
 

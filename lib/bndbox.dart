@@ -65,7 +65,7 @@ class _BndBoxState extends State<BndBox> {
             temp.forEach((f) {
               if (double.tryParse(
                       '${(f["confidenceInClass"] * 100).toStringAsFixed(0)}') >=
-                  40) {
+                  80) {
                 formerClasses.add("${f['detectedClass']}");
 
                 switch ("${f['detectedClass']}") {
@@ -119,7 +119,7 @@ class _BndBoxState extends State<BndBox> {
           }
         } else if (double.tryParse(
                 '${(re["confidenceInClass"] * 100).toStringAsFixed(0)}') >=
-            40) {
+            80) {
           if (formerClass != "${re["detectedClass"]}" || formerClass.isEmpty) {
             modelSpeak("${re["detectedClass"]}");
             setState(() => formerClass = "${re["detectedClass"]}");

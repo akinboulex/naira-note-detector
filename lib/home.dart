@@ -63,8 +63,8 @@ class _HomePageState extends State<HomePage> {
 //
       default:
         res = await Tflite.loadModel(
-            model: "assets/detect.tflite",
-            labels: "assets/labelmap.txt");
+            model: "assets/model.tflite",
+            labels: "assets/labels.txt");
     }
    // print(res);
   }

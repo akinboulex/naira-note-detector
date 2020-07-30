@@ -49,6 +49,10 @@ flutter:
    #- assets/ssd_mobilenet.tflite
    - assets/detect.tflite
    - assets/labelmap.txt
+   - assets/model.tflite
+   - assets/labels.txt
+   - assets/model_unquant.tflite
+   - assets/float labels.txt
    #- assets/ssd_mobilenet.txt
 
    #- assets/mobilenet_v1_1.0_224.tflite

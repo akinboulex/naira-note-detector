@@ -37,14 +37,6 @@ class _HomePageState extends State<HomePage> {
     await flutterTts.setSpeechRate(0.55);
   }
 
-  // function for outputting the naira note recognized out as speech
-  modelSpeak(amount) async {
-    await flutterTts.setLanguage("en-US");
-    await flutterTts.setPitch(0.85);
-    await flutterTts.speak(amount);
-    await flutterTts.setSpeechRate(0.75);
-  }
-
   loadModel() async {
     String res;
 //    res = await Tflite.loadModel(
@@ -71,8 +63,8 @@ class _HomePageState extends State<HomePage> {
 //
       default:
         res = await Tflite.loadModel(
-            model: "assets/detect.tflite",
-            labels: "assets/labelmap.txt");
+            model: "assets/model.tflite",
+            labels: "assets/labels.txt");
     }
    // print(res);
   }

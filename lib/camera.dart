@@ -41,6 +41,7 @@ class _CameraState extends State<Camera> {
         widget.cameras[0],
         ResolutionPreset.high,
       );
+
       controller.initialize().then((_) {
         if (!mounted) {
           return;
@@ -70,6 +71,7 @@ class _CameraState extends State<Camera> {
                 isDetecting = false;
 
               });
+
             } else if (widget.model == posenet) {
               Tflite.runPoseNetOnFrame(
                 bytesList: img.planes.map((plane) {
@@ -86,7 +88,8 @@ class _CameraState extends State<Camera> {
 
                 isDetecting = false;
               });
-            } else {
+            }
+            else {
               Tflite.detectObjectOnFrame(
                 bytesList: img.planes.map((plane) {
                   return plane.bytes;
@@ -101,7 +104,7 @@ class _CameraState extends State<Camera> {
 
               ).then((recognitions) {
                 int endTime = new DateTime.now().millisecondsSinceEpoch;
-                print("Detection took ${endTime - startTime}");
+//                print("Detection took ${endTime - startTime}");
 
                 widget.setRecognitions(recognitions, img.height, img.width);
 
